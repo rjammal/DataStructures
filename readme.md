@@ -7,7 +7,7 @@ This is a work in progress for me to cement in my understanding of different dat
 my skills fresh in the different languages I know. 
 
 Where possible, I try to simulate the native behavior of the language. 
-For example, pop in Python takes an argument that says what index to remove, but in JavaScript
+For example, pop in Python takes an argument that says what index to remove, but in JavaScript,
 pop's argument is how many elements to remove off of the end. 
 
 Languages I eventually plan to include: 
@@ -27,6 +27,9 @@ Data structures to include:
 * Deque
 * Set
 * Binary Tree
+ - Pre-order Traversal
+ - Post-order Traversal
+ - In-order Traversal
 * Binary Search Tree
  - Breadth First Search
  - Depth First Search
