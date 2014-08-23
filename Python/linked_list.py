@@ -147,6 +147,9 @@ class DoublyLinkedList:
         node = self.find_node(i)
         node.value = value
 
+    def length(self):
+        return self.length
+
     def __str__(self): 
         result = []
         current = self.head
