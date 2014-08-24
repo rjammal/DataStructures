@@ -1,8 +1,10 @@
+import unittest
+
 class DynamicArray: 
 
     def __init__(self, size = 10):
         self.arr = [None] * size
-        self.max = size
+        self.max = max(size, 1)
         self.length = 0
 
     def get(self, i):
@@ -19,7 +21,7 @@ class DynamicArray:
 
     def push(self, value): 
         if self.length >= self.max:
-            self.max = max(self.max * 2, 10) # in case someone initializes with 0 or negative
+            self.max *= 2 # in case someone initializes with 0 or negative
             new_arr = [None] * self.max
             for i in range(self.length):
                 new_arr[i] = self.arr[i]
@@ -57,7 +59,7 @@ class DynamicArray:
         
         if end == None:
             end = self.length
-        elif end < 0:
+        if end < 0:
             end += self.length
 
         # cannot use check_index because the end point is not included, so self.length is valid
@@ -81,3 +83,60 @@ class DynamicArray:
     def check_index(self, i):
         if i >= self.length or i < -self.length:
             raise IndexError("Array index out of range.")
+
+
+class TestDynamicArray(unittest.TestCase):
+
+    def setUp(self):
+        self.d = DynamicArray(4)
+        self.d.push(1)
+        self.d.push(5)
+        self.d.push(2)
+        self.d.push(9)
+        self.d.push(4)
+
+    def test_get(self):
+        self.assertEqual(self.d.get(0), 1)
+        self.assertEqual(self.d.get(2), 2)
+        self.assertEqual(self.d.get(-2), 9)
+        self.assertRaises(IndexError, self.d.get, 10)
+        self.assertRaises(IndexError, self.d.get, -6)
+
+    def test_set(self):
+        self.d.set(0, 5)
+        self.assertEqual(self.d.get(0), 5)
+        self.d.set(-1, 6)
+        self.assertEqual(self.d.get(-1), 6)
+        self.assertRaises(IndexError, self.d.set, 5, 1)
+        self.assertRaises(IndexError, self.d.set, -15, 1)
+
+    def test_push(self):
+        self.assertEqual(self.d.max, 8)
+
+        length = self.d.length
+        self.d.push(3)
+        self.assertEqual(self.d.length, length + 1)
+        self.assertEqual(self.d.get(-1), 3)
+
+    def test_pop(self):
+        length = self.d.length
+        self.assertEqual(self.d.pop(3), 9)
+        self.assertEqual(self.d.length, length - 1)
+        self.assertEqual(self.d.pop(), 4)
+
+    def test_slice(self):
+        length = self.d.length
+        self.assertEqual(length, self.d.slice().length)
+        
+        d_slice = self.d.slice(2)
+        self.assertEqual(d_slice.get(0), 2)
+        self.assertEqual(d_slice.get(-1), 4)
+        self.assertEqual(d_slice.length, 3)
+
+        d_slice = self.d.slice(1, 3)
+        self.assertEqual(d_slice.get(0), 5)
+        self.assertEqual(d_slice.get(-1), 2)
+        self.assertEqual(d_slice.length, 2)
+
+if __name__ == "__main__":
+    unittest.main()

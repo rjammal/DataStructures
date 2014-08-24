@@ -33,14 +33,14 @@ class TestDisjointSet(unittest.TestCase):
         self.d3 = DisjointSet(3)
 
     def test_find_parent(self):
-        self.assertTrue(self.d1.find_parent() == self.d1)
-        self.assertFalse(self.d1.find_parent() == self.d2.parent)
+        self.assertEqual(self.d1.find_parent(), self.d1)
+        self.assertNotEqual(self.d1.find_parent(), self.d2.parent)
 
     def test_union(self):
         self.d1.union(self.d2)
-        self.assertTrue(self.d1.find_parent() == self.d2.find_parent())
+        self.assertEqual(self.d1.find_parent(), self.d2.find_parent())
         self.d3.union(self.d1)
-        self.assertTrue(self.d2.find_parent() == self.d3.find_parent())
+        self.assertEqual(self.d2.find_parent(), self.d3.find_parent())
 
 
 
