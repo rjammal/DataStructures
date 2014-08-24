@@ -49,6 +49,23 @@ class Hash:
 
         raise KeyError("Given key is not present.") 
 
+    def delete(self, key):
+        key_index = hash(key) % self.space
+        current = self.arr[key_index]
+        if current and current.key == key:
+            self.arr[key_index] = current.next
+            return
+
+        while current: 
+            if current.key:
+                parent.next = current.next
+                return
+            else: 
+                parent = current
+                current = current.next
+
+        raise KeyError("Given key is not present.")
+
     def __str__(self):
         nodes = []
         for spot in self.arr:
@@ -89,6 +106,12 @@ class TestHash(unittest.TestCase):
         self.assertEqual(self.h.get("hello"), "world")
         self.assertEqual(self.h.get("hi"), 3)
         self.assertRaises(KeyError, self.h.get, "missing")
+
+    def test_delete(self):
+        self.h.delete("hi")
+        self.assertRaises(KeyError, self.h.get, "hi")
+        self.assertRaises(KeyError, self.h.delete, "missing")
+
 
 if __name__ == "__main__":
     unittest.main()
