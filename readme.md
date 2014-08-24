@@ -37,3 +37,4 @@ Data structures to include:
 * Heap (Priority Queue)
 * Graph
 * Linked Hash Map
+* Disjoint Set
