@@ -1,3 +1,5 @@
+import unittest
+
 class Hash:
 
     class Node:
@@ -67,3 +69,26 @@ class Hash:
             current.value = node.value
         else: 
             current.next = node
+
+class TestHash(unittest.TestCase):
+
+    def setUp(self):
+        self.h = Hash(2)
+        self.h.set("hi", 3)
+        self.h.set(2, 4)
+        self.h.set("test", "test")
+        self.h.set("hello", "world")
+
+    def test_set(self):
+        self.assertEqual(self.h.get(2), 4)
+        self.assertEqual(self.h.get("test"), "test")
+        self.h.set("test", "test2")
+        self.assertEqual(self.h.get("test"), "test2")
+
+    def test_get(self):
+        self.assertEqual(self.h.get("hello"), "world")
+        self.assertEqual(self.h.get("hi"), 3)
+        self.assertRaises(KeyError, self.h.get, "missing")
+
+if __name__ == "__main__":
+    unittest.main()

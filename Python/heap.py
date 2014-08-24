@@ -1,4 +1,5 @@
 import math
+import unittest
 
 class Heap: 
     class Node: 
@@ -72,3 +73,31 @@ class Heap:
 
     def __str__(self):
         return str([str(x) for x in self.arr])
+
+class TestHeap(unittest.TestCase):
+
+    def setUp(self):
+        self.h = Heap()
+        self.h.push(5, 5)
+        self.h.push(10, 10)
+        self.h.push(3, 3)
+        self.h.push(4, 4)
+
+    def test_peek(self):
+        self.assertEqual(self.h.peek(), 3)
+        self.h.pop()
+        self.assertEqual(self.h.peek(), 4)
+
+    def test_push(self):
+        self.h.push(1, 1)
+        self.assertEqual(self.h.peek(), 1)
+
+    def test_pop(self):
+        self.assertEqual(self.h.pop(), 3)
+        self.assertEqual(self.h.pop(), 4)
+        self.assertEqual(self.h.pop(), 5)
+        self.assertEqual(self.h.pop(), 10)
+        self.assertRaises(IndexError, self.h.pop)
+
+if __name__ == "__main__":
+    unittest.main()
