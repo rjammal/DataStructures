@@ -1,3 +1,5 @@
+import unittest
+
 class SinglyLinkedList: 
 
     class Node:
@@ -71,7 +73,7 @@ class SinglyLinkedList:
             counter += 1
         return current
 
-    def length(self): 
+    def size(self): 
         return self.length
 
     def __str__(self):
@@ -147,7 +149,7 @@ class DoublyLinkedList:
         node = self.find_node(i)
         node.value = value
 
-    def length(self):
+    def size(self):
         return self.length
 
     def __str__(self): 
@@ -173,3 +175,48 @@ class DoublyLinkedList:
     def check_index(self, i):
         if i < -self.length or i >= self.length:
             raise IndexError("Index out of bounds.")
+
+class TestLinkedList(unittest.TestCase):
+
+    def setUp(self): 
+        self.lists = [SinglyLinkedList(), DoublyLinkedList()]
+        for l in self.lists:
+            l.push(5)
+            l.push(6)
+            l.push(2)
+            l.push(7)
+
+    def test_pop(self):
+        for l in self.lists:
+            size = l.size()
+            self.assertEqual(l.pop(), 7)
+            self.assertEqual(l.size(), size - 1)
+            self.assertEqual(l.pop(1), 6)
+
+    def test_push(self):
+        for l in self.lists:
+            size = l.size()
+            l.push(10)
+            self.assertEqual(l.size(), size + 1)
+            self.assertEqual(l.get(-1), 10)
+
+    def test_get(self):
+        for l in self.lists:
+            self.assertEqual(l.get(0), 5)
+            self.assertEqual(l.get(-2), 2)
+            self.assertRaises(IndexError, l.get, 4)
+            self.assertRaises(IndexError, l.get, -5)
+
+    def test_set(self):
+        for l in self.lists:
+            size = l.size()
+            l.set(0, 3)
+            self.assertEqual(l.get(0), 3)
+            l.set(-2, 10)
+            self.assertEqual(l.get(-2), 10)
+            self.assertEqual(l.size(), size)
+            self.assertRaises(IndexError, l.set, 4, 1)
+            self.assertRaises(IndexError, l.set, -5, 1)
+
+if __name__ == "__main__":
+    unittest.main()
