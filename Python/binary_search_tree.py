@@ -1,4 +1,5 @@
 import unittest
+import queue
 from random import shuffle
 
 class BinarySearchTree:
@@ -118,19 +119,59 @@ class BinarySearchTree:
 
 
     def bfs(self, value):
-        pass
+        q = queue.Queue()
+        q.enqueue(self.root)
+        while not q.empty():
+            node = q.dequeue()
+            if not node:
+                continue
 
-    def dfs_in_order(self, value):
-        pass
+            if node.value == value:
+                return (node.key, node.value)
+            else:
+                q.enqueue(node.left)
+                q.enqueue(node.right)
+        return None
 
     def dfs_pre_order(self, value):
-        pass
+        return self.check_node_pre(self.root, value)
+
+    def dfs_in_order(self, value):
+        return self.check_node_in(self.root, value)
 
     def dfs_post_order(self, value):
-        pass
+        return self.check_node_post(self.root, value)
 
-    def find_node(self, key):
-        pass
+    def check_node_pre(self, node, value):
+        if not node: 
+            return None
+        elif node.value == value:
+            return (node.key, node.value)
+        else:
+            return self.check_node_pre(node.left, value) or self.check_node_pre(node.right, value)
+
+    def check_node_in(self, node, value):
+        if not node:
+            return None
+        left = self.check_node_in(node.left, value)
+        if left:
+            return left
+        if node.value == value:
+            return (node.key, node.value)
+        return self.check_node_in(node.right, value)
+
+    def check_node_post(self, node, value):
+        if not node:
+            return None
+
+        left = self.check_node_post(node.left, value)
+        if left:
+            return left
+        right = self.check_node_post(node.right, value)
+        if right:
+            return right
+        if node.value == value:
+            return (node.key, node.value)
 
 
 class TestBinarySearchTree(unittest.TestCase):
@@ -145,7 +186,9 @@ class TestBinarySearchTree(unittest.TestCase):
     def test_search(self):
         self.bst.remove(5)
         tests = [
-            (8, 8), 
+            (4, (4, 4)),
+            (0, (0, 0)),
+            (8, (8, 8)), 
             (10, None), 
             (5, None),
         ]
@@ -155,8 +198,8 @@ class TestBinarySearchTree(unittest.TestCase):
             self.assertEqual(self.bst.bfs(test[0]), test[1])
 
             # depth first search
-            self.assertEqual(self.bst.dfs_in_order(test[0]), test[1])
             self.assertEqual(self.bst.dfs_pre_order(test[0]), test[1])
+            self.assertEqual(self.bst.dfs_in_order(test[0]), test[1])
             self.assertEqual(self.bst.dfs_post_order(test[0]), test[1])
     
     def test_set(self):
