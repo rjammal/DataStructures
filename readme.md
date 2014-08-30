@@ -29,9 +29,9 @@ Data structures to include:
 * Binary Search Tree
  - Breadth First Search
  - Depth First Search
-  * Pre-order Traversal
-  * Post-order Traversal
-  * In-order Traversal
+   + Pre-order Traversal
+   + Post-order Traversal
+   + In-order Traversal
 * Trie (Prefix Tree)
 * Heap (Priority Queue)
 * Graph
