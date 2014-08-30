@@ -34,6 +34,8 @@ Data structures to include:
         * In-order Traversal
 * Trie (Prefix Tree)
 * Heap (Priority Queue)
-* Graph
+* Graph (Directed and Undirected)
+    - Adjacency Matrix
+    - Adjacency List
 * Linked Hash Map
 * Disjoint Set
