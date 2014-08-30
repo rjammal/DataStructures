@@ -27,11 +27,11 @@ Data structures to include:
 * Deque
 * Set
 * Binary Search Tree
- - Breadth First Search
- - Depth First Search
-   * Pre-order Traversal
-   * Post-order Traversal
-   * In-order Traversal
+    - Breadth First Search
+    - Depth First Search
+        * Pre-order Traversal
+        * Post-order Traversal
+        * In-order Traversal
 * Trie (Prefix Tree)
 * Heap (Priority Queue)
 * Graph
