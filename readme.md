@@ -8,7 +8,7 @@ my skills fresh in the different languages I know.
 
 Where possible, I try to simulate the native behavior of the language. 
 For example, pop in Python takes an argument that says what index to remove, but in JavaScript,
-pop's argument is how many elements to remove off of the end. 
+pop will only remove the last element. 
 
 Languages I eventually plan to include: 
 * Python
