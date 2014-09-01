@@ -1,5 +1,9 @@
 (function (root) {
 
+function NoValuePresentError( message ) {
+    this.message = message;
+}
+
 var SinglyLinkedList = root.SinglyLinkedList = function () {
     this.head = undefined;
     this.tail = undefined;
@@ -81,6 +85,29 @@ SinglyLinkedList.prototype.insert = function (index, value) {
         this.tail = node;
     }
     this.length++;
+}
+
+SinglyLinkedList.prototype.remove = function (value) {
+    var parent = undefined;
+    var current = this.head;
+    while (current) {
+        if (current.value === value) {
+            if (parent) {
+                parent.next = current.next;
+            } else {
+                this.head = current.next;
+            }
+            if (!current.next) {
+                this.tail = parent;
+            }
+            this.length--;
+            return;
+        } else {
+            parent = current;
+            current = current.next;
+        }
+    }
+    throw new NoValuePresentError(value + " was not in the list.");
 }
 
 
@@ -172,6 +199,31 @@ DoublyLinkedList.prototype.insert = function (index, value) {
     this.length++;
 }
 
+
+DoublyLinkedList.prototype.remove = function (value) {
+    var current = this.head;
+    while (current) {
+        if (current.value === value) {
+            if (current.next) {
+                current.next.prev = current.prev;
+            } else {
+                this.tail = current.prev;
+            }
+            if (current.prev) {
+                current.prev.next = current.next;
+            } else {
+                this.head = current.next;
+            }
+            this.length--;
+            return;
+        } else {
+            current = current.next;
+        }
+    }
+    throw new NoValuePresentError(value + " was not in the list.");
+}
+
+
 QUnit.module("linked lists")
 
 var linkedLists;
@@ -215,6 +267,21 @@ QUnit.test("set", function (assert) {
         assert.strictEqual(list.length, 6);
         assert.strictEqual(list.get(5), 2);
         assert.strictEqual(list.get(3), undefined);
+    });
+});
+
+QUnit.test("remove", function (assert) {
+    linkedLists.forEach( function (list) {
+        list.remove(3);
+        assert.strictEqual(list.length, 2);
+        assert.strictEqual(list.get(1), 4);
+        list.remove(4);
+        list.remove(5);
+        assert.strictEqual(list.length, 0);
+        assert.throws(
+            function () { list.remove(2) }, 
+            new NoValuePresentError("2 was not in the list.")
+            );
     });
 });
 
