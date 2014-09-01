@@ -223,7 +223,6 @@ DoublyLinkedList.prototype.remove = function (value) {
     throw new NoValuePresentError(value + " was not in the list.");
 }
 
-
 QUnit.module("linked lists")
 
 var linkedLists;
