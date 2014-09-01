@@ -1,6 +1,6 @@
-(function () {
+(function (root) {
 
-function SinglyLinkedList() {
+var SinglyLinkedList = root.SinglyLinkedList = function () {
     this.head = undefined;
     this.tail = undefined;
     this.length = 0;
@@ -11,7 +11,7 @@ SinglyLinkedList.Node = function (value) {
     this.next = undefined;
 }
 
-SinglyLinkedList.prototype.get = function (index) {
+var singlyGetNode = function (index) {
     if (index >= this.length) {
         return undefined;
     }
@@ -21,7 +21,24 @@ SinglyLinkedList.prototype.get = function (index) {
         current = current.next;
         currentIndex++;
     }
-    return current.value;
+    return current;
+}
+
+SinglyLinkedList.prototype.get = function (index) {
+    var node = singlyGetNode.call(this, index);
+    if (!node) {
+        return undefined;
+    }
+    return node.value;
+}
+
+SinglyLinkedList.prototype.set = function (index, value) {
+    var node = singlyGetNode.call(this, index);
+    if (!node) {
+        this.insert(index, value);
+    } else {
+        node.value = value;
+    }
 }
 
 SinglyLinkedList.prototype.add = function (value) {
@@ -67,7 +84,7 @@ SinglyLinkedList.prototype.insert = function (index, value) {
 }
 
 
-function DoublyLinkedList() {
+var DoublyLinkedList = root.DoublyLinkedList = function () {
     this.head = undefined;
     this.tail = undefined;
     this.length = 0;
@@ -92,16 +109,33 @@ DoublyLinkedList.prototype.add = function (value) {
     this.length++;
 }
 
-DoublyLinkedList.prototype.get = function (index) {
+var doublyGetNode = function (index) {
     if (this.length <= index) {
         return undefined;
     }
     var current = this.head;
     for (var i = 0; i < this.length; i++) {
         if (i === index) {
-            return current.value;
+            return current;
         }
         current = current.next;
+    }
+}
+
+DoublyLinkedList.prototype.get = function (index) {
+    var node = doublyGetNode.call(this, index);
+    if (!node) {
+        return undefined;
+    }
+    return node.value;
+}
+
+DoublyLinkedList.prototype.set = function (index, value) {
+    var node = doublyGetNode.call(this, index);
+    if (!node) {
+        this.insert(index, value);
+    } else {
+        node.value = value;
     }
 }
 
@@ -171,6 +205,17 @@ QUnit.test("insert", function (assert) {
         assert.strictEqual(list.get(5), 6);
         assert.strictEqual(list.length, 6)
     });
-})
+});
 
-})();
+QUnit.test("set", function (assert) {
+    linkedLists.forEach( function (list) {
+        list.set(1, 7);
+        assert.strictEqual(list.get(1), 7);
+        list.set(5, 2);
+        assert.strictEqual(list.length, 6);
+        assert.strictEqual(list.get(5), 2);
+        assert.strictEqual(list.get(3), undefined);
+    });
+});
+
+})(this);
