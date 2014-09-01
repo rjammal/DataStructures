@@ -39,6 +39,27 @@ DynamicArray.prototype.set = function (index, value) {
     this.arr[index] = value;
 }
 
+DynamicArray.prototype.splice = function (index, len) {
+    if (len === undefined) {
+        len = this.length - index;
+    }
+    var result = new DynamicArray(len)
+    var lengthAdjust = 0;
+    for (var i = index; i < this.length; i++) {
+        if (i < index + len) {
+            result.push(this.get(i));
+        }
+
+        var replacementIndex = i + len;
+        this.set(i, this.get(replacementIndex));
+        if (replacementIndex >= this.length) {
+            lengthAdjust++;
+        } 
+    }
+    this.length -= lengthAdjust;
+    return result;
+}
+
 QUnit.module("dynamic array");
 
 var arr;
@@ -65,6 +86,28 @@ QUnit.test("set", function (assert) {
     assert.strictEqual(arr.length, 11);
     assert.strictEqual(arr.get(4), undefined);
     assert.strictEqual(arr.get(10), 5);
+});
+
+QUnit.test("splice", function (assert) {
+    var newArr1 = arr.splice(0);
+    assert.strictEqual(newArr1.get(0), 2);
+    assert.strictEqual(newArr1.get(2), 10);
+    assert.strictEqual(newArr1.get(4), undefined);
+    assert.strictEqual(arr.length, 0);
+    assert.strictEqual(newArr1.length, 4);
+    
+    var newArr2 = newArr1.splice(1, 2);
+    assert.strictEqual(newArr1.get(0), 2);
+    assert.strictEqual(newArr1.get(1), 6);
+    assert.strictEqual(newArr1.length, 2);
+    assert.strictEqual(newArr2.get(0), 7);
+    assert.strictEqual(newArr2.get(1), 10);
+    assert.strictEqual(newArr2.length, 2);
+
+    var newArr3 = newArr1.splice(1, 12);
+    assert.strictEqual(newArr3.length, 1);
+    assert.strictEqual(newArr1.length, 1);
+    assert.strictEqual(newArr3.get(0), 6);
 });
 
 })(this);
