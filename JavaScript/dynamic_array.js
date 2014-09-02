@@ -87,6 +87,15 @@ DynamicArray.prototype.indexOf = function (value) {
     return -1;
 }
 
+DynamicArray.prototype.find = function (callback) {
+    for (var i = 0; i < this.length; i++) {
+        var val = this.get(i);
+        if (callback(val)) {
+            return val;
+        }
+    }
+}
+
 QUnit.module("dynamic array");
 
 var arr;
@@ -165,5 +174,17 @@ QUnit.test("indexOf", function (assert) {
     arr.push(10);
     assert.strictEqual(arr.indexOf(10), 2);
 });
+
+QUnit.test("find", function (assert) {
+    assert.strictEqual(arr.find( function (el) {
+        return el === 7;
+    }), 7);
+    assert.strictEqual(arr.find( function (el) {
+        return el < 10;
+    }), 2);
+    assert.strictEqual(arr.find( function (el) {
+        return el > 10;
+    }), undefined);
+})
 
 })(this);
