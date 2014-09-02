@@ -4,12 +4,18 @@ var Heap = root.Heap = function () {
     this.arr = new root.DynamicArray();
 }
 
-Heap.prototype.add = function (value) {
-    this.arr.push(value);
+function Node(priority, value) {
+    this.priority = priority;
+    this.value = value;
+}
+
+Heap.prototype.add = function (priority, value) {
+    var node = new Node(priority, value);
+    this.arr.push(node);
     var index = this.arr.length - 1;
     while (index > 0) {
         var parentIndex = Math.floor((index - 1) / 2);
-        if (this.arr.get(index) < this.arr.get(parentIndex)) {
+        if (this.arr.get(index).priority < this.arr.get(parentIndex).priority) {
             var temp = this.arr.get(index);
             this.arr.set(index, this.arr.get(parentIndex));
             this.arr.set(parentIndex, temp);
@@ -30,14 +36,14 @@ Heap.prototype.pop = function () {
         var child2 = index * 2 + 2;
         var smallestChild;
         if (child1 >= this.arr.length) {
-            return result;
+            return result.value;
         }
-        if (child2 >= this.arr.length || this.arr.get(child1) < this.arr.get(child2)) {
+        if (child2 >= this.arr.length || this.arr.get(child1).priority < this.arr.get(child2).priority) {
             smallestChild = child1;
         } else {
             smallestChild = child2;
         }
-        if (this.arr.get(index) > this.arr.get(smallestChild)) {
+        if (this.arr.get(index).priority > this.arr.get(smallestChild).priority) {
             var temp = this.arr.get(index);
             this.arr.set(index, this.arr.get(smallestChild));
             this.arr.set(smallestChild, temp);
@@ -46,7 +52,7 @@ Heap.prototype.pop = function () {
             break;
         }
     }
-    return result;
+    return result.value;
 }
 
 Heap.prototype.isEmpty = function () {
@@ -59,11 +65,11 @@ var heap;
 
 QUnit.testStart( function () {
     heap = new Heap();
-    heap.add(4);
-    heap.add(5);
-    heap.add(2);
-    heap.add(7);
-    heap.add(1);
+    heap.add(4, 4);
+    heap.add(5, 5);
+    heap.add(2, 2);
+    heap.add(7, 7);
+    heap.add(1, 1);
 });
 
 QUnit.test("pop and isEmpty", function (assert) {
