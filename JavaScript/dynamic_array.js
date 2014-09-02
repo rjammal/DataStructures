@@ -64,6 +64,29 @@ DynamicArray.prototype.pop = function () {
     return this.splice(this.length - 1).get(0);
 }
 
+DynamicArray.prototype.forEach = function (callback) {
+    for (var i = 0; i < this.length; i++) {
+        callback(this.get(i));
+    }
+}
+
+DynamicArray.prototype.map = function (callback) {
+    var result = new DynamicArray(this.length);
+    this.forEach( function (el) {
+        result.push(callback(el));
+    });
+    return result;
+}
+
+DynamicArray.prototype.indexOf = function (value) {
+    for (var i = 0; i < this.length; i++) {
+        if (this.get(i) === value) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 QUnit.module("dynamic array");
 
 var arr;
@@ -117,6 +140,30 @@ QUnit.test("splice", function (assert) {
 QUnit.test("pop", function (assert) {
     assert.strictEqual(arr.pop(), 6);
     assert.strictEqual(arr.length, 3);
+});
+
+QUnit.test("forEach", function (assert) {
+    var sum = 0;
+    arr.forEach( function (el) {
+        sum += el;
+    });
+    assert.strictEqual(sum, 25);
+});
+
+QUnit.test("map", function (assert) {
+    var mapResult = arr.map( function (el) {
+        return el * 2;
+    });
+    for (var i = 0; i < arr.length; i++) {
+        assert.strictEqual(mapResult.get(i), arr.get(i) * 2);
+    }
+});
+
+QUnit.test("indexOf", function (assert) {
+    assert.strictEqual(arr.indexOf(7), 1);
+    assert.strictEqual(arr.indexOf(3), -1);
+    arr.push(10);
+    assert.strictEqual(arr.indexOf(10), 2);
 });
 
 })(this);
