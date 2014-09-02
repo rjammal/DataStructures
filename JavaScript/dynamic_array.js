@@ -60,6 +60,10 @@ DynamicArray.prototype.splice = function (index, len) {
     return result;
 }
 
+DynamicArray.prototype.pop = function () {
+    return this.splice(this.length - 1).get(0);
+}
+
 QUnit.module("dynamic array");
 
 var arr;
@@ -108,6 +112,11 @@ QUnit.test("splice", function (assert) {
     assert.strictEqual(newArr3.length, 1);
     assert.strictEqual(newArr1.length, 1);
     assert.strictEqual(newArr3.get(0), 6);
+});
+
+QUnit.test("pop", function (assert) {
+    assert.strictEqual(arr.pop(), 6);
+    assert.strictEqual(arr.length, 3);
 });
 
 })(this);
